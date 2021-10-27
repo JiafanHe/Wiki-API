@@ -69,6 +69,31 @@ app.route("/articles/:title")
       }
     })
   })
+  .put(function(req,res){
+    //.update() was deprecated.
+    //Use replaceOne() if you want to overwrite an entire document
+    //rather than using atomic operators like $set.
+    Article.replaceOne(
+      {title:req.params.title}, //filter
+
+      //Update according to the information from request
+      //If we do not provide title in the request, the new document
+      //will not have the title field since we overwrite the entire 
+      //document
+      {
+       title:req.body.title,
+       content:req.body.content
+      },
+      function(err){
+        if(!err){
+          res.send("Successfully update a article");
+        }else{
+          console.log(err);
+          res.send("Cannot update a article.")
+        }
+      }
+    );
+  });
 
 app.listen(3000, function() {
   console.log("Server started on port 3000");
