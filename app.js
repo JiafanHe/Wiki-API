@@ -78,12 +78,29 @@ app.route("/articles/:title")
 
       //Update according to the information from request
       //If we do not provide title in the request, the new document
-      //will not have the title field since we overwrite the entire 
+      //will not have the title field since we overwrite the entire
       //document
       {
        title:req.body.title,
        content:req.body.content
       },
+      function(err){
+        if(!err){
+          res.send("Successfully update a article");
+        }else{
+          console.log(err);
+          res.send("Cannot update a article.")
+        }
+      }
+    );
+  })
+  .patch(function(req,res){
+
+    //Use .updateOne() to update only the specific fields
+    //and left other fields unchanged
+    Article.updateOne(
+      {title:req.params.title},
+      {$set:req.body},  //dynamicly update all the fields provided
       function(err){
         if(!err){
           res.send("Successfully update a article");
