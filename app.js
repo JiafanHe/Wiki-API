@@ -24,6 +24,7 @@ const Article = model("Article",articleSchema);
 
 //TODO
 
+/////////////////Requests targetting all articles///////////
 app.route("/articles")
   .get(function(req,res){
     Article.find({},function(err,docs){
@@ -56,6 +57,18 @@ app.route("/articles")
       }
     });
   });
+  ////////////////Requests targetting a specific article///////////
+
+app.route("/articles/:title")
+  .get(function(req,res){
+    Article.findOne({title:req.params.title},function(err,doc){
+      if(doc){
+        res.send(doc);
+      }else{
+        res.send("No matching article");
+      }
+    })
+  })
 
 app.listen(3000, function() {
   console.log("Server started on port 3000");
